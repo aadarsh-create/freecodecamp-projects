@@ -16,7 +16,9 @@ def draw_plot():
     y1 = res1.intercept + res1.slope*x1
     plt.plot(x1,y1,color='firebrick')
 
-    df2 = df[df['Year']>=2000]
+    mask=df['Year']>=2000
+    df2 = df[mask]
+
     res2 = linregress(df2['Year'], df2['CSIRO Adjusted Sea Level'])
     x2 = np.arange(df2['Year'].min(),2051,1)
     y2 = res2.intercept + res2.slope*x2

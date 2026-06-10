@@ -7,13 +7,14 @@ register_matplotlib_converters()
 
 df = pd.read_csv('fcc-forum-pageviews.csv', index_col='date', parse_dates=True)
 
-df = df[(df['value']>df['value'].quantile(0.025)) &
-       ((df['value']<df['value'].quantile(0.975)))]
+df = df[ (df["value"] >= df["value"].quantile(0.025)) & (df["value"] <= df["value"].quantile(0.975)) ]
 
 def draw_line_plot():
+    
     fig = plt.figure(figsize=(18,6))
+
     plt.plot(df,color='firebrick')
-    plt.title('Daily freeCodeCamp Forum Page Views 5/2016-12/2019')
+    plt.title('Forum Page Views 5/2016-12/2019')
     plt.xlabel('Date')
     plt.ylabel('Page Views')
 
@@ -21,6 +22,7 @@ def draw_line_plot():
     return fig
 
 def draw_bar_plot():
+
     df_bar = df.copy(deep=True)
     df_bar['year'] = df_bar.index.year
     months = ["January", "February", "March", "April", "May", "June", "July", "August",
@@ -46,12 +48,12 @@ def draw_bar_plot():
     return fig
 
 def draw_box_plot():
+
     df_box = df.copy()
     df_box.reset_index(inplace=True)
     df_box['year'] = [d.year for d in df_box.date]
     df_box['month'] = [d.strftime('%b') for d in df_box.date]
-    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-              "Sep", "Oct", "Nov", "Dec"]
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug","Sep", "Oct", "Nov", "Dec"]
     df_box['month'] = pd.Categorical(df_box['month'], categories=months)
 
     fig, ax = plt.subplots(1,2,figsize=(18,6))
